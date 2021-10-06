@@ -4,6 +4,7 @@ import IPython.display as ipd
 import numpy as np
 import torch
 import time
+import pickle
 
 
 def plot_data(data, figsize=(16, 4)):
@@ -45,6 +46,13 @@ def get_result_audio(mel_outputs_postnet, denoiser, waveglow):
     ipd.Audio(audio[0].data.cpu().numpy(), rate=hparams.sampling_rate)
     write("result/wavs/audio({}).wav".format(time.time()), rate, audio_numpy)
 
+
+def save_mel_object(mel, name):
+    pickle_out = open("result/mel" + name + ".pkl","wb")
+    pickle.dump(mel, pickle_out)
+    pickle_out.close()
+
+
 if __name__ == "__main__":
     # waveglow = load_vocoder()
     
@@ -59,11 +67,13 @@ if __name__ == "__main__":
     from waveglow.denoiser import Denoiser
 
     # denoiser = Denoiser(waveglow).half()
-    model = load_trained_model('tacotron2/outdir/checkpoint_28000')
+    model = load_trained_model('tacotron2/outdir/checkpoint_20000')
     text = 'MODIREKOLLEMIRaSEFARHANGIiSANaYEhEDASTIVAGARDEsGARIYEhOSTaNEYAZDiGOFTi'
     sequence = prepaire_input(text)
     mel_outputs, mel_outputs_postnet, _, alignments = model.inference(sequence)
-    plot_data((mel_outputs.float().data.cpu().numpy()[0],
-               mel_outputs_postnet.float().data.cpu().numpy()[0],
-               alignments.float().data.cpu().numpy()[0].T))
+    # plot_data((mel_outputs.float().data.cpu().numpy()[0],
+    #           mel_outputs_postnet.float().data.cpu().numpy()[0],
+    #           alignments.float().data.cpu().numpy()[0].T))
     # get_result_audio(mel_outputs_postnet, denoiser, waveglow)
+    
+    save_mel_object(mel_outputs_postnet, "20000")
