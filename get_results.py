@@ -48,7 +48,7 @@ def get_result_audio(mel_outputs_postnet, denoiser, waveglow):
 
 
 def save_mel_object(mel, name):
-    pickle_out = open("result/mel" + name + ".pkl","wb")
+    pickle_out = open("result/mel_object/mel" + name + ".pkl","wb")
     pickle.dump(mel, pickle_out)
     pickle_out.close()
 
@@ -67,8 +67,8 @@ if __name__ == "__main__":
     from waveglow.denoiser import Denoiser
 
     # denoiser = Denoiser(waveglow).half()
-    model = load_trained_model('tacotron2/outdir/checkpoint_20000')
-    text = 'MODIREKOLLEMIRaSEFARHANGIiSANaYEhEDASTIVAGARDEsGARIYEhOSTaNEYAZDiGOFTi'
+    model = load_trained_model('tacotron2/outdir/checkpoint_28000')
+    text = 'TAhMEihaNTALkiVALIkOsBUVAiMOhATTARhAST'
     sequence = prepaire_input(text)
     mel_outputs, mel_outputs_postnet, _, alignments = model.inference(sequence)
     # plot_data((mel_outputs.float().data.cpu().numpy()[0],
@@ -76,4 +76,4 @@ if __name__ == "__main__":
     #           alignments.float().data.cpu().numpy()[0].T))
     # get_result_audio(mel_outputs_postnet, denoiser, waveglow)
     
-    save_mel_object(mel_outputs_postnet, "20000")
+    save_mel_object(mel_outputs_postnet, "28000(test_3)")
