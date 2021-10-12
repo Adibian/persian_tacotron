@@ -186,7 +186,7 @@ def train(output_directory, log_directory, checkpoint_path, warm_start, n_gpus,
     train_loader, valset, collate_fn = prepare_dataloaders(hparams)
 
     # Load checkpoint if one exists
-    iteration = 0
+    iteration = 28000
     epoch_offset = 0
     if checkpoint_path is not None:
         if warm_start:

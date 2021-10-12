@@ -24,7 +24,7 @@ def data_to_dict(line):
         phoneme = phoneme.replace('CH', 'c').replace('KH', 'k').replace('SH', 's').replace('SIL', 'i').replace('AH', 'h').replace('ZH', 'z').replace('AA', 'a')  ## replace multi chars by one new char
         phoneme = re.sub("\[([0-9]+)\]\s*", '', phoneme)
         # chars.update(set(phoneme.split(' ')))
-        phenome = "/mnt/hdd1/adibian/files/wavs/" + name + ".wav|" + phoneme
+        phenome = "/mnt/hdd1/adibian/Tacotron2/files/wavs/" + name + ".wav|" + phoneme
         phonemes.append(phenome)
     return phonemes
 

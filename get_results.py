@@ -7,12 +7,12 @@ import time
 import pickle
 
 
-def plot_data(data, figsize=(16, 4)):
+def plot_data(data, file_name, figsize=(16, 4)):
     fig, axes = plt.subplots(1, len(data), figsize=figsize)
     for i in range(len(data)):
         axes[i].imshow(data[i], aspect='auto', origin='lower', 
                        interpolation='none')
-    plt.savefig("result/plots/output(28000)({}).jpg".format(time.time()))
+    plt.savefig("result/plots/output_{0}({1}).jpg".format(file_name, time.time()))
     
 
 def load_trained_model(checkpoint_path):
@@ -39,16 +39,16 @@ def prepaire_input(text):
         torch.from_numpy(sequence)).cuda().long()
     return sequence
 
-def get_result_audio(mel_outputs_postnet, denoiser, waveglow):
+def get_result_audio(mel_outputs_postnet, denoiser, waveglow, file_name):
     from scipy.io.wavfile import write
     with torch.no_grad():
         audio = waveglow.infer(mel_outputs_postnet, sigma=0.666)
     ipd.Audio(audio[0].data.cpu().numpy(), rate=hparams.sampling_rate)
-    write("result/wavs/audio({}).wav".format(time.time()), rate, audio_numpy)
+    write("result/wavs/audio_{0}({1}).wav".format(file_name, time.time()), rate, audio_numpy)
 
 
-def save_mel_object(mel, name):
-    pickle_out = open("result/mel_object/mel" + name + ".pkl","wb")
+def save_mel_object(mel, file_name):
+    pickle_out = open("result/mel_object/mel_" + file_name + ".pkl","wb")
     pickle.dump(mel, pickle_out)
     pickle_out.close()
 
@@ -67,13 +67,15 @@ if __name__ == "__main__":
     from waveglow.denoiser import Denoiser
 
     # denoiser = Denoiser(waveglow).half()
-    model = load_trained_model('tacotron2/outdir/checkpoint_28000')
+    # itter = "32000"
+    itter = sys.argv[1]
+    model = load_trained_model('tacotron2/outdir/checkpoint_' + itter)
     text = 'TAhMEihaNTALkiVALIkOsBUVAiMOhATTARhAST'
     sequence = prepaire_input(text)
     mel_outputs, mel_outputs_postnet, _, alignments = model.inference(sequence)
-    # plot_data((mel_outputs.float().data.cpu().numpy()[0],
-    #           mel_outputs_postnet.float().data.cpu().numpy()[0],
-    #           alignments.float().data.cpu().numpy()[0].T))
-    # get_result_audio(mel_outputs_postnet, denoiser, waveglow)
+    plot_data((mel_outputs.float().data.cpu().numpy()[0],
+               mel_outputs_postnet.float().data.cpu().numpy()[0],
+               alignments.float().data.cpu().numpy()[0].T), "test1_"+itter)
+    # get_result_audio(mel_outputs_postnet, denoiser, waveglow, "test1_"+itter)
     
-    save_mel_object(mel_outputs_postnet, "28000(test_3)")
+    save_mel_object(mel_outputs_postnet, "test1_"+itter)
