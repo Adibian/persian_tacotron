@@ -70,12 +70,12 @@ if __name__ == "__main__":
     # itter = "32000"
     itter = sys.argv[1]
     model = load_trained_model('tacotron2/outdir/checkpoint_' + itter)
-    text = 'TAhMEihaNTALkiVALIkOsBUVAiMOhATTARhAST'
+    text = 'BEHHAMINDALILiYEKIhAZBEHTARINDaRUHaYEGIYaHIBARaYEDARMaNiLARZEsEDASTEihASABIMIBasADi'
     sequence = prepaire_input(text)
     mel_outputs, mel_outputs_postnet, _, alignments = model.inference(sequence)
     plot_data((mel_outputs.float().data.cpu().numpy()[0],
                mel_outputs_postnet.float().data.cpu().numpy()[0],
-               alignments.float().data.cpu().numpy()[0].T), "test1_"+itter)
+               alignments.float().data.cpu().numpy()[0].T), "test2_"+itter)
     # get_result_audio(mel_outputs_postnet, denoiser, waveglow, "test1_"+itter)
     
-    save_mel_object(mel_outputs_postnet, "test1_"+itter)
+    save_mel_object(mel_outputs_postnet, "test2_"+itter)
