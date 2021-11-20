@@ -27,7 +27,7 @@ To use this implementation:
     If you get an error about memory size, decrease batch_size in hparams.py to 8.
   
 8. change get_results.py and set your test phonome in main: text = ?
-9. run get_results.py and set parameter to last saved chackpoint file. for example to use 'checkpoint_3200' use following command:
+9. run get_results.py and set parameter to last saved chackpoint file. for example to use 'checkpoint_32000' use following command:
     ```
     python get_results.py 32000
     ```
